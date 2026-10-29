@@ -1,0 +1,8 @@
+{
+  "case": "DF-017 training data only",
+  "algorithm": "sha256",
+  "files": {
+    "auth_log.csv": "9011778a7687a41e54da4ba96bd6597bf74252c9715572e2daac2615bebfc3d7",
+    "file_log.csv": "394afab97ca10d01347051f4862bf6b04f5937df41cd3d334c85898faa4feb73"
+  }
+}

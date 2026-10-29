@@ -1,0 +1,98 @@
+CHATGPT PROMPTS FOR CASE DF-017
+All evidence is synthetic. Copy only the named function and supplied classroom
+data. Keep any tokens, credentials and real case material out of the chat.
+
+OPTIONAL PLANNING PROMPT
+I am investigating two fictional logs: authentication and file access.
+We flag a successful login after at least three failed attempts from the same
+account, source IP and host during the previous five minutes. We then look for
+successful downloads in the same account, host and session during the next
+ten minutes. Explain a five-step plan. Do not write code or infer an attacker.
+
+PROMPT 1 -- LOGIN SEQUENCES
+I am learning intermediate Python through a digital forensics lab.
+Implement ONLY the function below, preserving its signature and contract.
+The supplied loader already validates, removes identical duplicate event IDs,
+and converts timestamps into timezone-aware UTC datetime objects. Rows are
+not sorted. Use readable loops, dictionaries, lists, sorted and timedelta
+(already imported). No extra packages and no hardcoded results. Do not change
+the tests, inputs, loader or other functions. First give brief pseudocode;
+then give the function and explain grouping keys and both time boundaries.
+
+def find_login_sequences(rows, min_failures=3, window_minutes=5):
+    """Find successes preceded by repeated failures; return a list of dicts.
+
+    Input: validated auth dictionaries in arbitrary order. timestamp is an
+    aware UTC datetime. Group on (username, source_ip, host), all case-sensitive.
+    For EACH SUCCESS at time T, select FAIL rows from that same group where
+    T - timedelta(minutes=window_minutes) <= failure time < T.
+    If there are at least min_failures, emit exactly one dict with these keys:
+      username, source_ip, host, session_id (copied from the success),
+      success_id (success event_id), success_time (success timestamp),
+      failure_ids (list ordered by timestamp then event_id).
+    Sort the output by (success_time, success_id). Emit nothing below threshold.
+    Do not reset at earlier successes: this rule evaluates each success window
+    independently. A failure may support more than one window.
+    Empty input returns []. Do not mutate input. No hardcoded IDs or outcomes.
+    Parameters are positive numbers. Use loops, dictionaries, lists, sorted,
+    and the imported timedelta. No additional packages are needed.
+    """
+    # TODO 1: replace this raise with your implementation.
+    raise NotImplementedError('Complete find_login_sequences')
+
+PROMPT 2 -- CORRELATE FILE ACTIVITY
+Implement ONLY the function below, preserving its signature and contract.
+The alerts come from find_login_sequences. File timestamps are already aware
+UTC datetimes and bytes values are integers. Use readable standard-library
+Python. Do not change tests, loader, raw data or other functions. Explain why
+matching only a username is unsafe, how the closed time window works, and why
+an alert with zero matching downloads must remain in the output.
+
+def correlate_downloads(alerts, file_rows, followup_minutes=10):
+    """Enrich each alert with file activity; return a new list of new dicts.
+
+    Input timestamps are aware UTC datetime objects; bytes is already an int.
+    For each alert at success_time T, match file rows on ALL of
+    (username, host, session_id). Keep only action == 'DOWNLOAD',
+    result == 'SUCCESS', and T <= timestamp <= T + timedelta(minutes=followup_minutes).
+    Sort matching rows by (timestamp, event_id). Copy the original alert fields
+    into a NEW dict, then add:
+      download_ids: matching event IDs in that order
+      download_count: number of matching events (not distinct paths)
+      total_bytes: sum of the matching bytes values
+    Keep alerts with no matches: [], 0, 0. Sort returned alerts by descending
+    total_bytes, then success_time, then success_id. Empty alerts returns [].
+    Do not mutate either input or its nested lists. Do not merge sessions based
+    only on a shared account. No hardcoded IDs or outcomes; no extra packages.
+    """
+    # TODO 2: replace this raise with your implementation.
+    raise NotImplementedError('Complete correlate_downloads')
+
+DEBUGGING PROMPT -- ONLY IF NEEDED
+Here is my function and the actual failing check output. Explain which part
+of the stated contract is violated and suggest the smallest code correction.
+Do not edit or remove tests, modify evidence, or hardcode a supplied answer.
+[Paste your function and actual terminal output here.]
+
+PROMPT 3 -- REVIEW AN OVERSTATED CLAIM
+This is a fictional forensic training case. Evaluate this draft claim:
+"The account with the largest download total belongs to the attacker. The
+log proves that this person stole evidence. Matching hashes prove the logs
+are authentic and complete."
+Using only the supplied summary, audit and manually checked event IDs below,
+identify unsupported parts in at most 100 words and rewrite the claim in
+two cautious sentences. Do not invent identity, motive, file contents,
+network destinations, MFA results or evidence that is not provided.
+[Paste summary.json, the audit counts, and your manually verified timeline.]
+
+PROMPT 4 -- DRAFT THE FINDING FOR HUMAN REVIEW
+Using only the fictional evidence below, draft a 180-220 word forensic finding.
+Include: the leading session and why it merits review; the relevant UTC time
+range and byte/event counts; a comparison with one other flagged session;
+two limitations; one plausible benign explanation; and two specific next
+evidence requests. Cite supplied event IDs for factual claims. Distinguish
+recorded activity from inference. A logged DOWNLOAD is not proof of a person,
+an unauthorised action, or completed exfiltration. Do not invent facts or say
+checks passed unless the supplied record shows they were run.
+[Paste summary.json, audit counts, your manually verified timeline and the
+actual check result. Then verify and edit the response yourself.]
