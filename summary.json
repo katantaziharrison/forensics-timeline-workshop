@@ -1,0 +1,69 @@
+{
+  "case": "DF-017 training data only",
+  "rule": {
+    "min_failures": 3,
+    "login_window_minutes": 5,
+    "followup_minutes": 10
+  },
+  "evidence_sha256": {
+    "auth_log.csv": "9011778a7687a41e54da4ba96bd6597bf74252c9715572e2daac2615bebfc3d7",
+    "file_log.csv": "394afab97ca10d01347051f4862bf6b04f5937df41cd3d334c85898faa4feb73"
+  },
+  "findings": [
+    {
+      "username": "analyst01",
+      "source_ip": "203.0.113.44",
+      "host": "DF-PORTAL01",
+      "session_id": "S-104",
+      "success_id": "A005",
+      "success_time": "2026-10-20T09:03:00Z",
+      "failure_ids": [
+        "A002",
+        "A003",
+        "A004"
+      ],
+      "download_ids": [
+        "F001",
+        "F002",
+        "F003"
+      ],
+      "download_count": 3,
+      "total_bytes": 5509120
+    },
+    {
+      "username": "analyst02",
+      "source_ip": "198.51.100.70",
+      "host": "DF-PORTAL01",
+      "session_id": "S-304",
+      "success_id": "A018",
+      "success_time": "2026-10-20T10:05:00Z",
+      "failure_ids": [
+        "A015",
+        "A016",
+        "A017"
+      ],
+      "download_ids": [
+        "F013"
+      ],
+      "download_count": 1,
+      "total_bytes": 2048
+    },
+    {
+      "username": "backup_svc",
+      "source_ip": "192.0.2.80",
+      "host": "DF-PORTAL01",
+      "session_id": "S-204",
+      "success_id": "A014",
+      "success_time": "2026-10-20T09:18:00Z",
+      "failure_ids": [
+        "A011",
+        "A012",
+        "A013"
+      ],
+      "download_ids": [],
+      "download_count": 0,
+      "total_bytes": 0
+    }
+  ],
+  "interpretation": "Rule matches identify sessions for review; they do not prove intrusion, exfiltration, or identity."
+}

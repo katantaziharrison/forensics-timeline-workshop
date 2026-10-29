@@ -1,0 +1,41 @@
+[
+  {
+    "username": "analyst01",
+    "source_ip": "203.0.113.44",
+    "host": "DF-PORTAL01",
+    "session_id": "S-104",
+    "success_id": "A005",
+    "success_time": "2026-10-20T09:03:00Z",
+    "failure_ids": [
+      "A002",
+      "A003",
+      "A004"
+    ]
+  },
+  {
+    "username": "backup_svc",
+    "source_ip": "192.0.2.80",
+    "host": "DF-PORTAL01",
+    "session_id": "S-204",
+    "success_id": "A014",
+    "success_time": "2026-10-20T09:18:00Z",
+    "failure_ids": [
+      "A011",
+      "A012",
+      "A013"
+    ]
+  },
+  {
+    "username": "analyst02",
+    "source_ip": "198.51.100.70",
+    "host": "DF-PORTAL01",
+    "session_id": "S-304",
+    "success_id": "A018",
+    "success_time": "2026-10-20T10:05:00Z",
+    "failure_ids": [
+      "A015",
+      "A016",
+      "A017"
+    ]
+  }
+]

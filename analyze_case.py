@@ -24,8 +24,46 @@ def find_login_sequences(rows, min_failures=3, window_minutes=5):
     Parameters are positive numbers. Use loops, dictionaries, lists, sorted,
     and the imported timedelta. No additional packages are needed.
     """
-    # TODO 1: replace this raise with your implementation.
-    raise NotImplementedError('Complete find_login_sequences')
+    # Keep account, source address, and host together; comparisons remain case-sensitive.
+    failures_by_group = {}
+    for row in rows:
+        if row['result'] == 'FAIL':
+            key = (row['username'], row['source_ip'], row['host'])
+            if key not in failures_by_group:
+                failures_by_group[key] = []
+            failures_by_group[key].append(row)
+
+    # Evaluate each success independently so failures can support overlapping windows.
+    alerts = []
+    window = timedelta(minutes=window_minutes)
+    for success in rows:
+        if success['result'] != 'SUCCESS':
+            continue
+        key = (success['username'], success['source_ip'], success['host'])
+        success_time = success['timestamp']
+        window_start = success_time - window
+        failures = []
+        for failure in failures_by_group.get(key, []):
+            # Include the window start, but exclude failures at the success time.
+            if window_start <= failure['timestamp'] < success_time:
+                failures.append(failure)
+
+        if len(failures) >= min_failures:
+            failure_ids = []
+            # Use event IDs to break timestamp ties without reordering the input.
+            for failure in sorted(failures, key=lambda row: (row['timestamp'], row['event_id'])):
+                failure_ids.append(failure['event_id'])
+            alerts.append({
+                'username': success['username'],
+                'source_ip': success['source_ip'],
+                'host': success['host'],
+                'session_id': success['session_id'],
+                'success_id': success['event_id'],
+                'success_time': success_time,
+                'failure_ids': failure_ids,
+            })
+
+    return sorted(alerts, key=lambda alert: (alert['success_time'], alert['success_id']))
 
 def correlate_downloads(alerts, file_rows, followup_minutes=10):
     """Enrich each alert with file activity; return a new list of new dicts.
@@ -44,8 +82,46 @@ def correlate_downloads(alerts, file_rows, followup_minutes=10):
     Do not mutate either input or its nested lists. Do not merge sessions based
     only on a shared account. No hardcoded IDs or outcomes; no extra packages.
     """
-    # TODO 2: replace this raise with your implementation.
-    raise NotImplementedError('Complete correlate_downloads')
+    # Restrict candidates to successful downloads from the same account, host, and session.
+    downloads_by_group = {}
+    for row in file_rows:
+        if row['action'] == 'DOWNLOAD' and row['result'] == 'SUCCESS':
+            key = (row['username'], row['host'], row['session_id'])
+            if key not in downloads_by_group:
+                downloads_by_group[key] = []
+            downloads_by_group[key].append(row)
+
+    enriched_alerts = []
+    window = timedelta(minutes=followup_minutes)
+    for alert in alerts:
+        key = (alert['username'], alert['host'], alert['session_id'])
+        start = alert['success_time']
+        end = start + window
+        matches = []
+        for row in downloads_by_group.get(key, []):
+            # The follow-up window is closed: activity at either endpoint counts.
+            if start <= row['timestamp'] <= end:
+                matches.append(row)
+
+        download_ids = []
+        total_bytes = 0
+        # Count individual events, including repeated downloads of the same path.
+        for row in sorted(matches, key=lambda row: (row['timestamp'], row['event_id'])):
+            download_ids.append(row['event_id'])
+            total_bytes += row['bytes']
+
+        # Copy the alert and its evidence list to avoid sharing that mutable list.
+        enriched = dict(alert)
+        enriched['failure_ids'] = list(alert['failure_ids'])
+        enriched['download_ids'] = download_ids
+        enriched['download_count'] = len(download_ids)
+        enriched['total_bytes'] = total_bytes
+        # Retain the login alert even when no downloads match ([], 0, and 0).
+        enriched_alerts.append(enriched)
+
+    # Rank by transferred bytes, then resolve ties chronologically and by event ID.
+    return sorted(enriched_alerts, key=lambda alert: (
+        -alert['total_bytes'], alert['success_time'], alert['success_id']))
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
