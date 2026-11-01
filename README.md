@@ -75,7 +75,7 @@ with this supplied baseline; it does not establish authenticity or completeness.
 - Number of flagged successful sessions: [54]
 
 | Success ID | Account | Session | Supporting failure IDs | Download IDs | Event count | Total bytes |
-| --- | --- | --- | --- | --- | --- | --- |
+| A005|analyst01|--- | --- | --- | --- | --- | --- | --- |
 | [one row per flagged success] | | | | | | |
 
 ## Manual evidence check -- do this without asking AI to count for you
