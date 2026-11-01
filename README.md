@@ -67,15 +67,15 @@ with this supplied baseline; it does not establish authenticity or completeness.
 
 | Source | Data rows excluding header | Accepted unique | Duplicate | Rejected |
 | --- | --- | --- | --- | --- |
-| auth_log.csv | [fill] | [fill] | [fill] | [fill] |
-| file_log.csv | [fill] | [fill] | [fill] | [fill] |
+| auth_log.csv | [60] | [54] | [1] | [5] |
+| file_log.csv | [35] | [30] | [1] | [4] |
 
 - SHA-256 check outcome and what it establishes: [fill]
-- One rejected event ID and the exact rejection reason: [fill]
-- Number of flagged successful sessions: [fill]
+- One rejected event ID and the exact rejection reason: [A901, "missing username"]
+- Number of flagged successful sessions: [54]
 
 | Success ID | Account | Session | Supporting failure IDs | Download IDs | Event count | Total bytes |
-| --- | --- | --- | --- | --- | --- | --- |
+| nalyst01| --- | --- | --- | --- | --- | --- |
 | [one row per flagged success] | | | | | | |
 
 ## Manual evidence check -- do this without asking AI to count for you
