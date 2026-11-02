@@ -76,7 +76,11 @@ with this supplied baseline; it does not establish authenticity or completeness.
 
 | Success ID | Account | Session | Supporting failure IDs | Download IDs | Event count | Total bytes |
 | --- | --- | --- | --- | --- | --- | --- |
-| [one row per flagged success] | | | | | | |
+| A005 |Analyst01 | s-104| A002",
+        "A003",
+        "A004"| F001",
+        "F002",
+        "F003"| 3| 5509120|
 
 ## Manual evidence check -- do this without asking AI to count for you
 
