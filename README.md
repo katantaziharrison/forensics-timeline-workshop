@@ -92,6 +92,11 @@ original timestamps and UTC equivalents. Add rows as needed.
 | --- | --- | --- | --- |
 | auth_log.csv/A002 | Failed login | 2026-10-20T08:58:00Z | 2026-10-20T08:58:00Z|
 |auth_log.csv/A003  | Failed login | 2026-10-20T09:00:00Z | 2026-10-20T09:00:00Z|
+|auth_log.csv/A004  | Failed login | 2026-10-20T10:01:00+01:00 | 2026-10-20T09:01:00Z|
+|auth_log.csv/A005  | Successful login| 2026-10-20T09:03:00Z| 2026-10-20T09:03:00Z|
+|file_log.csv/F001  | Successful download| 2026-10-20T09:05:00Z | 2026-10-20T09:05:00Z|
+|file_log.csv/F002  | Successful download| 2026-10-20T10:07:00+01:00| 2026-10-20T09:07:00Z|
+|file_log.csv/F003  | Successful download| 2026-10-20T09:13:00Z| 2026-10-20T09:13:00Z|
 
 - Manual sum of download bytes, showing the addition: [fill]
 - A001 versus A002: which qualifies for the A005 window and why? [fill]
