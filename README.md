@@ -146,11 +146,11 @@ of the stated classroom rule, not certification of a forensic tool.
 
 Prompt 3 response about the overstated claim (keep the actual response):
 
-> [paste]
+> [Session S-104 for analyst01 had the highest flagged download total, with 5,509,120 bytes across F001–F003 after failures A002–A004 and success A005. These events warrant investigation but do not establish identity or theft, and matching manifest hashes do not prove the logs’ authenticity or completeness]
 
 One claim we corrected or independently verified, with event IDs:
 
-[fill]
+[We corrected the claim that the highest download total proves analyst01 was the attacker and stole evidence. Events A002–A004 show failed logins before success A005, followed by qualifying downloads F001–F003 totaling 5,509,120 bytes in session S-104. These records support further investigation but do not establish who controlled the account or prove theft.]
 
 Final 180-220 word finding, reviewed and edited by the pair:
 
