@@ -78,7 +78,7 @@ with this supplied baseline; it does not establish authenticity or completeness.
 | --- | --- | --- | --- | --- | --- | --- |
 | A005 |Analyst01 | s-104| A002,A003,A004|F001, F003,F002|3| 5509120|
 |A018|analyst02|S-304|A015,A016,A017|013|1|2048|
-       
+|A014|backup_svc|S-204|A011,A012,A013| |0|0|    
         
        
 
