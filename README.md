@@ -173,7 +173,46 @@ Prompt 2 — Correlate file activity: Implemented correlate_downloads to match q
 Prompt 3 — Review an overstated claim: Identified unsupported claims about identity, theft and log authenticity/completeness, and produced a cautious two-sentence rewrite.
 Prompt 4 — Draft the finding for human review: Produced a 180–220 word draft covering supporting event IDs, UTC times, download totals, a comparison session, observations versus inference, two limitations, a benign explanation and two next evidence requests.]
 - One follow-up question or correction, with a short response excerpt: [Can you access those files and then re-evaluate Prompt 3?” Response excerpt:The evidence does not identify who controlled analyst01 or establish theft. Download volume alone does not identify an attacker. Matching hashes show agreement with the supplied manifest, not authenticity or completeness.”]
-- Results of code and evidence checks performed: [fill]
+- Results of code and evidence checks performed: [harrisonkatantazi@MacBook-Pro-som-tillhor-Harrison Student_Project_Forensic_AI % python3 analyze_case.py
+SHA-256 checks match the supplied manifest.
+auth_log.csv: 60 rows; 54 accepted; 1 duplicate; 5 rejected.
+file_log.csv: 35 rows; 30 accepted; 1 duplicate; 4 rejected.
+Saved audit.json. A hash match does not prove origin or completeness.
+Found 3 login sequences; saved login_alerts.json.
+Saved summary.json. Verify event IDs against both original CSV files.
+A005 analyst01 S-104: 3 failures, 3 downloads, 5509120 bytes
+A018 analyst02 S-304: 3 failures, 1 downloads, 2048 bytes
+A014 backup_svc S-204: 3 failures, 0 downloads, 0 bytes
+
+harrisonkatantazi@MacBook-Pro-som-tillhor-Harrison Student_Project_Forensic_AI % python3 check_solution.py 
+test_supplied_case (__main__.CaseChecks) ... ok
+test_closed_window_includes_zero_and_ten_minutes (__main__.DownloadChecks) ... ok
+test_configurable_followup (__main__.DownloadChecks) ... ok
+test_does_not_mutate_either_input (__main__.DownloadChecks) ... ok
+test_empty (__main__.DownloadChecks) ... ok
+test_keeps_alert_with_no_downloads (__main__.DownloadChecks) ... ok
+test_ranking_event_ties_and_repeated_paths (__main__.DownloadChecks) ... ok
+test_requires_session_account_host_action_and_success (__main__.DownloadChecks) ... ok
+test_conflicting_ids_are_not_silently_discarded (__main__.EvidenceChecks) ... ok
+test_equivalent_time_offsets_and_missing_offset (__main__.EvidenceChecks) ... ok
+test_hash_mismatch_stops_analysis (__main__.EvidenceChecks) ... ok
+test_supplied_quality_counts_and_duplicates (__main__.EvidenceChecks) ... ok
+test_account_ip_and_host_must_all_match (__main__.LoginChecks) ... ok
+test_does_not_mutate_input (__main__.LoginChecks) ... ok
+test_empty (__main__.LoginChecks) ... ok
+test_failures_without_success_are_not_alerts (__main__.LoginChecks) ... ok
+test_outside_equal_and_future_failures_do_not_count (__main__.LoginChecks) ... ok
+test_parameters_and_each_success_window (__main__.LoginChecks) ... ok
+test_ties_and_output_order (__main__.LoginChecks) ... ok
+test_unsorted_rows_and_evidence_order (__main__.LoginChecks) ... ok
+test_window_includes_exactly_five_minutes (__main__.LoginChecks) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.012s
+
+OK
+
+Running python3 -B check_solution.py passed all 21 supplied tests. Running python3 -B analyze_case.py confirmed that both CSV hashes matched the supplied manifest and produced three flagged login sequences. The audit reported 54 accepted authentication records, one duplicate and five rejected rows; file activity had 30 accepted records, one duplicate and four rejected rows. Checking A002–A005 and F001–F003 against the original CSVs confirmed the leading session’s timestamps, time-window eligibility and total of 5,509,120 bytes. Duplicate occurrences of A003 and F001 were counted once. Hash agreement does not establish the logs’ authenticity or completeness.]
 
 
 ## Submit
