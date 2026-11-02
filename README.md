@@ -70,7 +70,7 @@ with this supplied baseline; it does not establish authenticity or completeness.
 | auth_log.csv | [60] | [54] | [1] | [5] |
 | file_log.csv | [35] | [30] | [1] | [4] |
 
-- SHA-256 check outcome and what it establishes: [fill]
+- SHA-256 check outcome and what it establishes: [Both CSV files’ SHA-256 hashes matched the supplied manifest. This establishes that their contents agree with the manifest’s expected hashes, but does not prove the logs’ origin, authenticity, accuracy or completeness.]
 - One rejected event ID and the exact rejection reason: [A901, "missing username"]
 - Number of flagged successful sessions: [54]
 
@@ -228,3 +228,12 @@ Optional stretch after the core task: use the interactive Python console to
 compare `min_failures=2` with `min_failures=3`, without changing the defaults or
 original evidence. Which extra session appears, and does that change what you
 can conclude? Record this separately from the required default output.
+
+{'username': 'student01', 'source_ip': '192.0.2.21', 'host': 'DF-PORTAL01', 'session_id': 'S-404', 'success_id': 'A021', 'success_time': datetime.datetime(2026, 10, 20, 10, 22, tzinfo=datetime.timezone.utc), 'failure_ids': ['A019', 'A020']}
+>>> print("Threshold 3:", [a['session_id'] for a in default_alerts])
+Threshold 3: ['S-104', 'S-204', 'S-304']
+>>> print("Threshold 2:", [a['session_id'] for a in lower_alerts])
+Threshold 2: ['S-104', 'S-204', 'S-304', 'S-404']
+>>> 
+
+Lowering min_failures from 3 to 2 added session S-404, supported by failures A019–A020 before success A021. This shows how the threshold affects which sessions are flagged for review; it does not prove unauthorized access or identify a person. The default settings and required outputs were unchanged.
