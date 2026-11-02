@@ -98,19 +98,45 @@ original timestamps and UTC equivalents. Add rows as needed.
 |file_log.csv/F002  | Successful download| 2026-10-20T10:07:00+01:00| 2026-10-20T09:07:00Z|
 |file_log.csv/F003  | Successful download| 2026-10-20T09:13:00Z| 2026-10-20T09:13:00Z|
 
-- Manual sum of download bytes, showing the addition: [fill]
-- A001 versus A002: which qualifies for the A005 window and why? [fill]
-- F003 versus F004: which qualifies for the A005 follow-up and why? [fill]
-- Why F005 is excluded even though the account matches: [fill]
-- One +01:00 timestamp and its equivalent UTC time: [fill]
-- One limitation of excluding malformed records: [fill]
+- Manual sum of download bytes, showing the addition: [Manual sum of download bytes: F001 + F002 + F003 = 5,242,880 + 262,144 + 4,096 = 5,509,120 bytes.]
+- A001 versus A002: which qualifies for the A005 window and why? [A002 qualifies because its timestamp, 08:58:00Z, is exactly five minutes before A005 at 09:03:00Z. The lower boundary is inclusive. A001 at 08:57:59Z falls outside by one second.]
+- F003 versus F004: which qualifies for the A005 follow-up and why? [F003 qualifies at 09:13:00Z, exactly ten minutes after A005. The upper boundary is inclusive. F004 at 09:13:01Z falls outside by one second.]
+- Why F005 is excluded even though the account matches: [Its session is S-OTHER, whereas A005’s session is S-104. Username, host, and session must all match.]
+- One +01:00 timestamp and its equivalent UTC time: [A004’s 2026-10-20T10:01:00+01:00 equals 2026-10-20T09:01:00Z; subtract one hour.]
+- One limitation of excluding malformed records: [ome rejected records could represent relevant activity. Excluding them can leave gaps and undercount events, so the findings describe only the accepted evidence.]
 
 ## Checks actually run
 
 Command, date and actual final result (paste output, including failures if any):
+date '+%Y-%m-%d %H:%M:%S %Z' python3 -B check_solution.py 2>&1
+```
+2026-11-02 14:20:54 CET
+test_supplied_case (__main__.CaseChecks) ... ok
+test_closed_window_includes_zero_and_ten_minutes (__main__.DownloadChecks) ... ok
+test_configurable_followup (__main__.DownloadChecks) ... ok
+test_does_not_mutate_either_input (__main__.DownloadChecks) ... ok
+test_empty (__main__.DownloadChecks) ... ok
+test_keeps_alert_with_no_downloads (__main__.DownloadChecks) ... ok
+test_ranking_event_ties_and_repeated_paths (__main__.DownloadChecks) ... ok
+test_requires_session_account_host_action_and_success (__main__.DownloadChecks) ... ok
+test_conflicting_ids_are_not_silently_discarded (__main__.EvidenceChecks) ... ok
+test_equivalent_time_offsets_and_missing_offset (__main__.EvidenceChecks) ... ok
+test_hash_mismatch_stops_analysis (__main__.EvidenceChecks) ... ok
+test_supplied_quality_counts_and_duplicates (__main__.EvidenceChecks) ... ok
+test_account_ip_and_host_must_all_match (__main__.LoginChecks) ... ok
+test_does_not_mutate_input (__main__.LoginChecks) ... ok
+test_empty (__main__.LoginChecks) ... ok
+test_failures_without_success_are_not_alerts (__main__.LoginChecks) ... ok
+test_outside_equal_and_future_failures_do_not_count (__main__.LoginChecks) ... ok
+test_parameters_and_each_success_window (__main__.LoginChecks) ... ok
+test_ties_and_output_order (__main__.LoginChecks) ... ok
+test_unsorted_rows_and_evidence_order (__main__.LoginChecks) ... ok
+test_window_includes_exactly_five_minutes (__main__.LoginChecks) ... ok
 
-```text
-[fill]
+----------------------------------------------------------------------
+Ran 21 tests in 0.011s
+
+OK
 ```
 
 All 21 supplied checks should pass. Passing these checks is limited validation
