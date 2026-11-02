@@ -90,7 +90,8 @@ original timestamps and UTC equivalents. Add rows as needed.
 
 | Source and event ID | Original timestamp | UTC timestamp | What the row records |
 | --- | --- | --- | --- |
-| [fill] | [fill] | [fill] | [fill] |
+| auth_log.csv/A002 | Failed login | 2026-10-20T08:58:00Z | 2026-10-20T08:58:00Z|
+|auth_log.csv/A003  | Failed login | 2026-10-20T09:00:00Z | 2026-10-20T09:00:00Z|
 
 - Manual sum of download bytes, showing the addition: [fill]
 - A001 versus A002: which qualifies for the A005 window and why? [fill]
